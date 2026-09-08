@@ -57,5 +57,6 @@ git push origin v1.2
 | `meet-devices.js` | Meet のマイク／カメラ ON・OFF |
 | `model.js` | 判定 |
 | `hud.js` / `hud.css` | 表示 |
+| `icons/` | 拡張アイコン |
 | `content.js` | 起動と 1 本の更新ループ |
 | `protocol.js` | 2 つの world のあいだのメッセージ契約 |

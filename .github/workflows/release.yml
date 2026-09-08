@@ -18,9 +18,10 @@ jobs:
         run: |
           set -euo pipefail
           tag="${GITHUB_REF_NAME#v}"
-          mkdir -p dist/pkg
+          mkdir -p dist/pkg/icons
           cp manifest.json protocol.js page-hook.js meet-devices.js \
             model.js hud.js content.js hud.css dist/pkg/
+          cp icons/icon16.png icons/icon48.png icons/icon128.png dist/pkg/icons/
           python3 -c "
           import json
           from pathlib import Path
