@@ -1,0 +1,26 @@
+{
+  "manifest_version": 3,
+  "name": "Google Meet 自己監視",
+  "version": "1.2",
+  "description": "マイク・カメラ・回線が Meet サーバーへちゃんと送れているかを知らせます",
+  "content_scripts": [
+    {
+      "matches": ["https://meet.google.com/*"],
+      "js": ["protocol.js", "page-hook.js"],
+      "run_at": "document_start",
+      "world": "MAIN"
+    },
+    {
+      "matches": ["https://meet.google.com/*"],
+      "css": ["hud.css"],
+      "js": [
+        "protocol.js",
+        "meet-devices.js",
+        "model.js",
+        "hud.js",
+        "content.js"
+      ],
+      "run_at": "document_idle"
+    }
+  ]
+}
