@@ -1,0 +1,45 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check tag matches manifest version
+        run: |
+          tag="${GITHUB_REF_NAME#v}"
+          version="$(python3 -c 'import json; print(json.load(open("manifest.json"))["version"]')"
+          if [ "$tag" != "$version" ]; then
+            echo "tag v${tag} と manifest.json の version ${version} が一致しません"
+            exit 1
+          fi
+
+      - name: Zip extension
+        run: |
+          mkdir -p dist
+          zip -r "dist/meet-noise-alert-${GITHUB_REF_NAME}.zip" \
+            manifest.json \
+            protocol.js \
+            page-hook.js \
+            meet-devices.js \
+            model.js \
+            hud.js \
+            content.js \
+            hud.css
+
+      - name: Create GitHub Release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release create "$GITHUB_REF_NAME" dist/*.zip \
+            --title "$GITHUB_REF_NAME" \
+            --generate-notes
